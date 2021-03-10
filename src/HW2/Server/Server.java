@@ -1,4 +1,4 @@
-package Server;
+package HW2.Server;
 
 
 import java.io.IOException;

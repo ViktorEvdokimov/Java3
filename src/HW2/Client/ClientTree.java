@@ -1,4 +1,4 @@
-package Client;
+package HW2.Client;
 
 public class ClientTree {
     public static void main(String[] args) {

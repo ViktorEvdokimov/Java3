@@ -1,4 +1,4 @@
-package Client;
+package HW2.Client;
 
 import javax.swing.*;
 import java.awt.*;
