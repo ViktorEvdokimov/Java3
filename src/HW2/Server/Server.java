@@ -1,23 +1,27 @@
 package HW2.Server;
 
 
+import HW2.Server.DB.ConnectToDB;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.sql.SQLException;
 import java.util.HashSet;
 import java.util.Set;
 
 public class Server {
     private int port;
     private final ServerSocket serverSocket;
-    private final AuthService authService;
+//    private final AuthService authService;
+    private final ConnectToDB authService = new ConnectToDB();
     private final Set<ClientHandler> clients;
 
     public Server(int port) {
         try {
             this.port = port;
             serverSocket = new ServerSocket(port);
-            authService = new AuthService();
+//            authService = new AuthService();
             clients = new HashSet<ClientHandler>();
             while (true){
                 System.out.println("Waiting for new client");
@@ -27,6 +31,8 @@ public class Server {
             }
         } catch (IOException e) {
             throw new RuntimeException("SWW when up a server", e);
+        } finally {
+            authService.closeConnection();
         }
 
     }
@@ -62,7 +68,21 @@ public class Server {
         return true;
     }
 
-    public AuthService getAuthService() {
-        return authService;
+    public String createAccount (String login, String password, String nickname){
+        try {
+            if (authService.createNewClient(login,password,nickname)){
+                return nickname;
+            } else return null;
+        } catch (SQLException e) {
+            throw new RuntimeException("SWW when create new account");
+        }
+    }
+
+    public String getNickname(String login, String password) {
+        try {
+            return authService.getNicknameByLogin(login, password);
+        } catch (SQLException e) {
+            throw new RuntimeException("SWW when getting nickname", e);
+        }
     }
 }

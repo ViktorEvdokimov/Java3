@@ -30,7 +30,8 @@ public class ClientHandler {
 
     private void work (){
         try {
-            sendMessage("Hello, for login start your message \"-auth\" then send login and password");
+            sendMessage("Hello, for login start your message \"-auth\" then send login and password, " +
+                    "or start \"-new\" login, password and nickname to create new account.");
             authorizationLimit();
             authorization();
             waitingMessage();
@@ -96,29 +97,51 @@ public class ClientHandler {
     }
 
     private  void authorization() throws IOException {
-        while (true){
+        while (true) {
             String message = in.readUTF();
 //            if (message.equals("/end")) {
 //                closeConnection();
 //            }
             String[] parts = message.split("\\s");
-            if (parts[0].equals("-auth")){
-                name = server.getAuthService().getNickByLoginAndPass(parts[1],parts[2]);
-                if (name!=null && parts.length==3){
-                    if (authorisationFailed) {
-                        sendMessage("Time to connecting lost");
-                        closeConnection();
-                        return;
-                    } else if (server.isNickFree(name)) {
-                        sendMessage("Login successful");
+            if (parts[0].equals("-new") || parts[0].equals("-auth")){
+            if (parts[0].equals("-new")){
+                if (parts.length==4) {
+                    name = server.createAccount(parts[1], parts[2], parts[3]);
+                    if (name!=null){
+                        if (authorisationFailed) {
+                            sendMessage("Time to connecting lost");
+                            closeConnection();
+                            return;
+                        }
+                        sendMessage("Create account successful");
                         server.broadcast(name + " login");
                         server.subscribe(this);
                         authorisationFailed = false;
                         t1.stop();
                         return;
-                    } else sendMessage("This login busy");
-                } else sendMessage("Incorrect message length, login of password.");
-            } else sendMessage("To continue you should login. Please start your message \"-auth\"");
+                    } else sendMessage("Login or nickname is busy.");
+
+                } else sendMessage("Incorrect message length.");
+            } //else sendMessage("To continue you should login. Please start your message \"-auth\" or \"-new\"");
+
+                if (parts[0].equals("-auth")) {
+                    name = server.getNickname(parts[1], parts[2]);
+                    if (name != null && parts.length == 3) {
+                        if (authorisationFailed) {
+                            sendMessage("Time to connecting lost");
+                            closeConnection();
+                            return;
+                        } else if (server.isNickFree(name)) {
+                            sendMessage("Login successful");
+                            server.broadcast(name + " login");
+                            server.subscribe(this);
+                            authorisationFailed = false;
+                            t1.stop();
+                            return;
+                        } else sendMessage("This login busy");
+                    } else sendMessage("Incorrect message length, login of password.");
+                }
+                } else sendMessage("To continue you should login. Please start your message \"-auth\" or \"-new\"");
         }
     }
 
