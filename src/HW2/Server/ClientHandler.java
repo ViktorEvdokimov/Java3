@@ -49,8 +49,14 @@ public class ClientHandler {
             if (message.equals("/end")){
                 server.broadcast(name + "logout");
                 return;
-            } else if (message.startsWith("/w")){
-                privateMessage(message);
+            } else if (message.startsWith("/")){
+                if (message.startsWith("/w")) {
+                    privateMessage(message);
+                } else if (message.startsWith("/newlog")){
+                    changeLogin(message);
+                } else if (message.startsWith("/newnick")){
+                    changeNickname(message);
+                }
             } else if (!message.isBlank()) server.broadcast(name + ": " +message);
         }
     }
@@ -84,6 +90,26 @@ public class ClientHandler {
         }
     }
 
+    private void changeLogin (String message){
+        String[] parts = message.split("\\s");
+        if (parts.length == 3) {
+            if (server.changeLogin(name, parts[1], parts[2])) sendMessage("Change complete");
+            else sendMessage("Incorrect password or login busy.");
+        } else sendMessage("Incorrect message length/");
+    }
+
+    private void changeNickname (String message){
+        String[] parts = message.split("\\s");
+        if (parts.length == 3) {
+            if (server.changeNickname(name, parts[1], parts[2])) {
+                sendMessage("Change complete");
+                server.broadcast(String.format("%s change nickname to %s", name, parts[2]));
+                name = parts[2];
+            }
+            else sendMessage("Incorrect password or Nickname busy.");
+        } else sendMessage("Incorrect message length/");
+    }
+
     private void closeConnection(){
         server.unsubscribe(this);
         try {
@@ -113,7 +139,9 @@ public class ClientHandler {
                             closeConnection();
                             return;
                         }
-                        sendMessage("Create account successful");
+                        sendMessage("Create account successful. For send private message yot should start your message" +
+                                "/w recipient nickname and yor message. For change login stat /newlog password new login" +
+                                "For change login stat /newnick password new nickname");
                         server.broadcast(name + " login");
                         server.subscribe(this);
                         authorisationFailed = false;
@@ -132,7 +160,9 @@ public class ClientHandler {
                             closeConnection();
                             return;
                         } else if (server.isNickFree(name)) {
-                            sendMessage("Login successful");
+                            sendMessage("Login successful. For send private message yot should start your message" +
+                                    "/w recipient nickname and yor message. For change login stat /newlog password new login" +
+                                    "For change login stat /newnick password new nickname");
                             server.broadcast(name + " login");
                             server.subscribe(this);
                             authorisationFailed = false;

@@ -78,6 +78,22 @@ public class Server {
         }
     }
 
+    public boolean changeLogin (String nickname, String password, String newLogin){
+        try {
+            return authService.changeLogin(nickname, password, newLogin);
+        } catch (SQLException e) {
+            throw new RuntimeException("SWW when change login.", e);
+        }
+    }
+
+    public boolean changeNickname (String nickname, String password, String newNickname){
+        try {
+            return authService.changeNickname(nickname, password, newNickname);
+        } catch (SQLException e) {
+            throw new RuntimeException("SWW when change login.", e);
+        }
+    }
+
     public String getNickname(String login, String password) {
         try {
             return authService.getNicknameByLogin(login, password);

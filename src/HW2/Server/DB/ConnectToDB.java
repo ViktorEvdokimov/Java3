@@ -20,8 +20,6 @@ public class ConnectToDB {
     }
 
     public boolean createNewClient (String login, String password, String nickname) throws SQLException {
-            con= DriverManager.getConnection(url, user, pass);
-            stmt=con.createStatement();
             rs = stmt.executeQuery(String.format("SELECT * FROM java3.Loginbase " +
                     "WHERE Login='%s'", login));
             if (rs.next()) return false;
@@ -33,13 +31,47 @@ public class ConnectToDB {
             return true;
     }
 
+    public boolean changeLogin (String nickname, String password, String newLogin) throws SQLException {
+        rs = stmt.executeQuery(String.format("SELECT * FROM java3.Loginbase " +
+                "WHERE Login='%s'", newLogin));
+        if (rs.next()){
+            return false;
+        }
+        rs = stmt.executeQuery(String.format("SELECT * FROM java3.Loginbase " +
+                " WHERE Nickname='%s' AND Password='%s'", nickname, password));
+        if (rs.next()){
+            int id=rs.getInt("id");
+            stmt.executeUpdate(String.format("UPDATE java3.Loginbase SET Login='%s' WHERE " +
+                    " id='%s'", newLogin, id));
+            return true;
+        }
+        return false;
+    }
+
+    public boolean changeNickname (String nickname, String password, String newNickname) throws SQLException {
+        rs = stmt.executeQuery(String.format("SELECT * FROM java3.Loginbase " +
+                "WHERE Nickname='%s'", newNickname));
+        if (rs.next()){
+            return false;
+        }
+        rs = stmt.executeQuery(String.format("SELECT * FROM java3.Loginbase " +
+                "WHERE Nickname='%s' AND Password='%s'", nickname, password));
+        if (rs.next()){
+            int id=rs.getInt("id");
+            stmt.executeUpdate(String.format("UPDATE java3.Loginbase SET Nickname='%s' WHERE " +
+                    " id='%d'", newNickname, id));
+            return true;
+        }
+        return false;
+    }
+
     public void closeConnection (){
         try {
             con.close();
             stmt.close();
             rs.close();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        } catch (SQLException e) {
+            throw new RuntimeException("SWW when close connection.");
         }
     }
 
