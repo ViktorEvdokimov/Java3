@@ -139,6 +139,7 @@ public class ClientHandler {
                             closeConnection();
                             return;
                         }
+                        sendMessage("Hello "+name);
                         sendMessage("Create account successful. For send private message yot should start your message" +
                                 "/w recipient nickname and yor message. For change login stat /newlog password new login" +
                                 "For change login stat /newnick password new nickname");
@@ -160,6 +161,7 @@ public class ClientHandler {
                             closeConnection();
                             return;
                         } else if (server.isNickFree(name)) {
+                            sendMessage("Hello "+name);
                             sendMessage("Login successful. For send private message yot should start your message" +
                                     "/w recipient nickname and yor message. For change login stat /newlog password new login" +
                                     "For change login stat /newnick password new nickname");
