@@ -1,9 +1,11 @@
 package HW2.Client;
 
 import javax.xml.crypto.Data;
+import java.awt.*;
 import java.io.*;
 import java.net.Socket;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Scanner;
 
@@ -61,11 +63,22 @@ public class ClientNetwork {
     private String getOldMessages (){
         try (FileInputStream inData = new FileInputStream(String.format("%s.txt", name))){
             StringBuilder sb = new StringBuilder();
+            ArrayList<String> list = new ArrayList<>();
             int temp;
             while ((temp=inData.read())!=-1){
                 sb.append((char) temp);
+                if (temp=='\n'){
+                    list.add(sb.toString());
+                    sb = new StringBuilder();
+                }
             }
-            return sb.toString();
+            sb = new StringBuilder();
+            int size;
+            if (list.size()<=100) size = list.size();
+            else size= 100;
+            for (int i= list.size()-size; i<list.size();i++) sb.append(list.get(i));
+            String st = sb.toString();
+            return st;
         } catch (IOException e){
             throw new RuntimeException("SWW when get old messages.", e);
         }

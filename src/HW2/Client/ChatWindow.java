@@ -7,8 +7,9 @@ import java.util.function.Consumer;
 public class ChatWindow extends JFrame {
     private final StringBuilder sb;
     private final JTextField inputField;
-    private final JTextArea textArea;
+    private JTextArea textArea;
     private Consumer<String> consumer;
+    private final JScrollPane scrollPane;
 
 
     public ChatWindow(Consumer<String> consumer) {
@@ -18,6 +19,9 @@ public class ChatWindow extends JFrame {
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setBounds(100,100,400,500);
         setVisible(true);
+
+
+
 
         JPanel chatArea = new JPanel();
         chatArea.setLayout(new BorderLayout());
@@ -36,15 +40,31 @@ public class ChatWindow extends JFrame {
 
         add(textArea, BorderLayout.CENTER);
         add(inputArea, BorderLayout.SOUTH);
-
+        scrollPane = new JScrollPane(textArea);
+        add(scrollPane, BorderLayout.CENTER);
 
     }
 
     public void append (String message){
         if (!message.isBlank()) {
-            sb.append(message);
+            int symbolCount=0;
+            sb.append("    ");
+            for (int i=0; i<message.length(); i++){
+                if (symbolCount>55 && message.charAt(i)==' ') {
+                    sb.append('\n');
+                    symbolCount = 0;
+                }
+                else sb.append(message.charAt(i));
+                if (message.charAt(i)!='\n'){
+                    symbolCount++;
+                } else {
+                    symbolCount = 0;
+                }
+            }
             sb.append("\n");
             textArea.setText(sb.toString());
+
+
         }
     }
 
