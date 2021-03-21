@@ -4,6 +4,8 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class ClientHandler {
     private final Server server;
@@ -12,17 +14,22 @@ public class ClientHandler {
     private final DataOutputStream out;
     private String name;
     boolean authorisationFailed = false;
+    private final ExecutorService es;
     Thread t1;
 
     public ClientHandler(Socket socket, Server server) {
         this.socket = socket;
         this.server = server;
+        es = Executors.newSingleThreadExecutor();
         try {
             in = new DataInputStream(socket.getInputStream());
             out = new DataOutputStream(socket.getOutputStream());
-            new Thread (this::work).start();
+            es.execute(this::work);
+//            new Thread (this::work).start();
         } catch (IOException e) {
             throw new RuntimeException("SWW when create client handler.");
+        } finally {
+            es.shutdown();
         }
 
 
@@ -36,7 +43,6 @@ public class ClientHandler {
             authorization();
             waitingMessage();
         } catch (IOException e) {
-            closeConnection();
             throw new RuntimeException("SWW when client handler work");
         } finally {
             closeConnection();
@@ -47,7 +53,7 @@ public class ClientHandler {
         while (true){
             String message = in.readUTF();
             if (message.equals("/end")){
-                server.broadcast(name + "logout");
+//                server.broadcast(name + "logout");
                 return;
             } else if (message.startsWith("/")){
                 if (message.startsWith("/w")) {
@@ -112,10 +118,12 @@ public class ClientHandler {
 
     private void closeConnection(){
         server.unsubscribe(this);
+        server.broadcast(name + " logout.");
         try {
             in.close();
             out.close();
             socket.close();
+            es.shutdown();
         } catch (IOException e) {
             throw new RuntimeException("SWW when close connection.");
         }

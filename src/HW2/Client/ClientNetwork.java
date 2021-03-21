@@ -25,8 +25,6 @@ public class ClientNetwork {
             socket = new Socket(host, port);
             in = new DataInputStream(socket.getInputStream());
             out = new DataOutputStream(socket.getOutputStream());
-
-
         } catch (IOException e) {
             throw new RuntimeException("SWW", e);
         } finally {

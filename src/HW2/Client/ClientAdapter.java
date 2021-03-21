@@ -1,29 +1,46 @@
 package HW2.Client;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.function.Consumer;
 
 public class ClientAdapter {
-    private final ClientNetwork network;
-    private final ChatWindow window;
+    private  ClientNetwork network;
+    private  ChatWindow window;
+    private final ExecutorService es = Executors.newSingleThreadExecutor();
 
     public ClientAdapter(String host, int port) {
-        this.network = new ClientNetwork(host, port);
+        try {
+            this.network = new ClientNetwork(host, port);
         this.window = new ChatWindow(new Consumer<String>() {
             @Override
             public void accept(String message) {
                 network.sendMessage(message);
             }
         });
-        receive();
+            es.execute(this::receive);
+        } finally {
+            es.shutdown();
+        }
     }
+
+    private void createWindow (){
+        this.window = new ChatWindow(new Consumer<String>() {
+            @Override
+            public void accept(String message) {
+                network.sendMessage(message);
+            }
+        });
+    }
+
     private void receive (){
-        new Thread(()-> {
+ //       new Thread(()-> {
             while (true){
                 String message = network.receive();
                 if (!message.isBlank()) {
                     window.append(message);
                 }
             }
-        }).start();
+ //       }).start();
     }
 }
