@@ -1,5 +1,7 @@
 package HW5;
 
+import java.util.concurrent.CountDownLatch;
+
 public class Car implements Runnable {
     private static int CARS_COUNT;
     static {
@@ -25,8 +27,8 @@ public class Car implements Runnable {
         CARS_COUNT++;
         this.name = "Участник #" + CARS_COUNT;
     }
-    @Override
-    public void run() {
+
+    public void preparation (){
         try {
             System.out.println(this.name + " готовится");
             Thread.sleep(500 + (int)(Math.random() * 800));
@@ -34,6 +36,10 @@ public class Car implements Runnable {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void run() {
         for (int i = 0; i < race.getStages().size(); i++) {
             race.getStages().get(i).go(this);
         }
