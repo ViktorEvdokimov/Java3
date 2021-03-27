@@ -4,6 +4,7 @@ import java.util.concurrent.CountDownLatch;
 
 public class Car implements Runnable {
     private static int CARS_COUNT;
+    private static boolean anybodyWin;
     static {
         CARS_COUNT = 0;
     }
@@ -30,6 +31,7 @@ public class Car implements Runnable {
 
     public void preparation (){
         try {
+            anybodyWin = false;
             System.out.println(this.name + " готовится");
             Thread.sleep(500 + (int)(Math.random() * 800));
             System.out.println(this.name + " готов");
@@ -42,6 +44,13 @@ public class Car implements Runnable {
     public void run() {
         for (int i = 0; i < race.getStages().size(); i++) {
             race.getStages().get(i).go(this);
+        }
+    }
+
+    public synchronized void printWin (){
+        if (!anybodyWin){
+            anybodyWin = true;
+            System.out.println(this.name + " - WIN");
         }
     }
 }

@@ -6,7 +6,7 @@ import java.util.concurrent.Executors;
 
 public class MainClass {
     private static ExecutorService es;
-    public static final int CARS_COUNT = 4;
+    public static final int CARS_COUNT = 5;
     private static CountDownLatch waitingStart = new CountDownLatch(CARS_COUNT);
     private static CountDownLatch waitingEnd = new CountDownLatch(CARS_COUNT);
     private static Car[] cars;
@@ -39,6 +39,7 @@ public class MainClass {
             for (Car car : cars){
                 es.execute(()->{
                     car.run();
+                    car.printWin();
                     waitingEnd.countDown();
                 });
             }
