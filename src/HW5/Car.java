@@ -11,6 +11,11 @@ public class Car implements Runnable {
     public String getName() {
         return name;
     }
+
+    public static int getCarsCount() {
+        return CARS_COUNT;
+    }
+
     public int getSpeed() {
         return speed;
     }
