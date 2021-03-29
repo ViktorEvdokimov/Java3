@@ -1,0 +1,16 @@
+18:45:45,853 INFO  [Server] server start
+18:45:57,299 INFO  [Server] Client Socket[addr=/127.0.0.1,port=50505,localport=8989] connect.
+18:46:06,798 INFO  [Server] N1 login
+18:46:14,281 INFO  [Server] Client Socket[addr=/127.0.0.1,port=50513,localport=8989] connect.
+18:46:24,245 INFO  [Server] N2 broadcast message
+18:46:24,263 INFO  [Server] N2 login
+18:46:25,592 INFO  [Server] N2 broadcast message
+18:46:25,593 INFO  [Server] N2 broadcast message
+18:46:26,302 INFO  [Server] N2 broadcast message
+18:46:26,303 INFO  [Server] N2 broadcast message
+18:46:31,838 INFO  [Server] N2whisper to N1
+18:46:34,510 INFO  [Server] N1 broadcast message
+18:46:34,511 INFO  [Server] N1 broadcast message
+18:46:36,571 INFO  [Server] N2 logout
+18:46:36,572 INFO  [Server] N2 broadcast message
+18:46:43,404 INFO  [Server] N1 logout
