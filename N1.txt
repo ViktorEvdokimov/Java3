@@ -1,0 +1,37 @@
+New login 21.03.2021 08:51:54 
+Hello N1
+Login successful. For send private message yot should start your message/w recipient nickname and yor message. For change login stat /newlog password new loginFor change login stat /newnick password new nickname
+N2 login
+N2: sdf
+N2 logout.
+N2 logout.
+New login 21.03.2021 08:53:35 
+Hello N1
+Login successful. For send private message yot should start your message/w recipient nickname and yor message. For change login stat /newlog password new loginFor change login stat /newnick password new nickname
+N3 login
+New login 21.03.2021 08:55:33 
+Hello N1
+Login successful. For send private message yot should start your message/w recipient nickname and yor message. For change login stat /newlog password new loginFor change login stat /newnick password new nickname
+N4 login
+New login 28.03.2021 07:51:28 
+Hello N1
+Login successful. For send private message yot should start your message/w recipient nickname and yor message. For change login stat /newlog password new loginFor change login stat /newnick password new nickname
+N1: fdg
+New login 29.03.2021 06:43:45 
+Hello N1
+Login successful. For send private message yot should start your message/w recipient nickname and yor message. For change login stat /newlog password new loginFor change login stat /newnick password new nickname
+N1: sdfg
+N2 login
+N2 whisper you: sdds
+N2: sdf
+N1: ghj
+N2 logout.
+New login 29.03.2021 06:46:06 
+Hello N1
+Login successful. For send private message yot should start your message/w recipient nickname and yor message. For change login stat /newlog password new loginFor change login stat /newnick password new nickname
+N2 login
+N2: dsf
+N2: dsf
+N2 whisper you: dsf
+N1: dsgf
+N2 logout.
